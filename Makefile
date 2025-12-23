@@ -3,3 +3,9 @@ run:
 
 lint:
 	uv run pre-commit run --all
+
+makemigrations:
+	uv run ./src/django_project/manage.py makemigrations
+
+migrate:
+	uv run ./src/django_project/manage.py migrate
