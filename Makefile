@@ -9,3 +9,6 @@ makemigrations:
 
 migrate:
 	uv run ./src/django_project/manage.py migrate
+
+createsuperuser:
+	uv run ./src/django_project/manage.py createsuperuser
