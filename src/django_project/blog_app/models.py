@@ -5,8 +5,8 @@ class Category(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
 
-    def increase_title(self):
-        return str(self.title)
+    def __str__(self):
+        return self.title
 
 class Post(models.Model):
     title = models.CharField(max_length=255)
@@ -23,5 +23,5 @@ class Post(models.Model):
         self.views_count = self.views_count + 1
         return self.views_count
 
-    def increase_title(self):
-        return str(self.title)
+    def __str__(self):
+        return self.title
