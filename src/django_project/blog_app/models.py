@@ -21,7 +21,7 @@ class Post(models.Model):
 
     def increase_views_count(self):
         self.views_count = self.views_count + 1
-        return self.views_count
+        self.save()
 
     def __str__(self):
         return self.title
