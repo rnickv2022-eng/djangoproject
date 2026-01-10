@@ -7,13 +7,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("Введите id удаляемой статьи")
         id_1 = str(input())
-        i = False
-        posts = Post.objects.all()
-        for post in posts:
-            if str(post.id) == id_1:
-                i = True
-                del_post = Post.objects.filter(id=id_1)
-                del_post.delete()
+        post_available = Post.objects.filter(id=id_1).exists()
+        if post_available:
+                Post.objects.filter(id=id_1).delete()
                 print("Статья удалена")
-        if not i:
+        if not post_available:
             print("Статья данным с данным id не найдена")

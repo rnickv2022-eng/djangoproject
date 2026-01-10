@@ -5,11 +5,10 @@ class Command(BaseCommand):
     help = "выводит список всех статей с фильтрацйией по опубликованным"
 
     def handle(self, *args, **options):
-        posts = Post.objects.all()
-        i_1 = False
-        for post in posts:
-            if post.published:
+        post_available = Post.objects.filter(published=True).exists()
+        if post_available:
+            posts = Post.objects.filter(published=True)
+            for post in posts:
                 self.stdout.write(f"{post.id} {post.title} {post.created_at:%Y-%m-%d} {post.author}")
-                i_1 = True
-        if not i_1:
+        if not post_available:
             self.stdout.write(self.style.WARNING("Опубликованных статей нет"))
