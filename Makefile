@@ -12,3 +12,18 @@ migrate:
 
 createsuperuser:
 	uv run ./src/django_project/manage.py createsuperuser
+
+print_posts:
+	uv run ./src/django_project/manage.py print_posts
+
+print_published_posts:
+	uv run ./src/django_project/manage.py print_published_posts
+
+create_post:
+	uv run ./src/django_project/manage.py create_post
+
+update_post:
+	uv run ./src/django_project/manage.py update_post
+
+delete_post:
+	uv run ./src/django_project/manage.py delete_post
