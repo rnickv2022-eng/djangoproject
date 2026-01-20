@@ -9,6 +9,9 @@ def index(request):
 
 def post_list(request):
     posts = Post.objects.filter(published = True)
+    if not posts:
+        response_content = "<h1> Статей пока нет. </h1> <ul>"
+        return HttpResponse(response_content)
     response_content = "<h1>Список статей</h1> <ul>"
     for post in posts:
        response_content = response_content + f'<li><a href="/post/{post.slug}/">{post.title}</a> {post.created_at}</li>'
@@ -37,6 +40,9 @@ def categories_list(request):
 def category_detail(request, category_id):
     сategory_1 = get_object_or_404(Category, pk = category_id)
     posts = Post.objects.filter(topic=сategory_1)
+    if not posts:
+        response_content = f"<h1> В категории: {сategory_1.title}, статей нет. </h1> <ul>"
+        return HttpResponse(response_content)
     response_content = f"<h1> Категория: {сategory_1.title} </h1> <ul>"
     response_content += '<li><a href="/categories/">Перейти к категориям </a>'
     for post in posts:
