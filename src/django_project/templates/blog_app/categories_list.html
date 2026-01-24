@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Главная страница - {{block.super}}{% endblock %}
+
+
+{% block content %}
+<h1>Список категорий</h1>
+    <div class="row">
+        {% for category in categories %}
+        <div class="col-md-12 mb-1"> <!--mb-1-->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{category.title}}</h5>
+                    <a class="btn btn-outline-primary btn-sm" href="{% url "blog:category_detail" category.id %}">Перейти к категории</a> <!--btn-outline-primary-->
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <p>Категорий пока нет</p>
+        {% endfor %}
+    </div>
+
+{% endblock %}
