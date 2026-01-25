@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{category.title}} - {{block.super}}{% endblock %}
+{% block title %}Категория {{category_name}} - {{block.super}}{% endblock %}
 
 
 {% block content %}
@@ -14,9 +14,9 @@
                     <h6 class="card-subtitle mb-2 text-muted">{{post.created_at|date:"d.m.Y"}}</h6>
                     <h6 class="card-subtitle mb-2 text-muted">Контент: {{post.content|truncatewords:30}}</h6>
                     {% if post.published %}
-                    <h6 class="card-subtitle mb-2 text" style="color: green;">Опубликована</h6> <!--style="color: green;-->
+                    <h6 class="card-subtitle text-success-emphasis mb-2">Опубликована</h6> <!--text-success-emphasis-->
                     {% else %}
-                    <h6 class="card-subtitle mb-2" style="color: red;">Неопубликована </h6> <!--style="color: red;-->
+                    <h6 class="card-subtitle text-danger-emphasis mb-2">Неопубликована</h6> <!--text-danger-emphasis-->
                     {% endif %}
                     <a class="btn btn-primary btn-sm" href="{% url "blog:post_detail" post.slug %}">Перейти к статье</a>
                 </div>
