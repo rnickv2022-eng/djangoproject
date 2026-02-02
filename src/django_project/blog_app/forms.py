@@ -68,6 +68,4 @@ class CategoryForm(forms.ModelForm):
         subject = cleaned_data.get("title")
         category_available = Category.objects.filter(title=subject).exclude(pk=self.instance.pk).exists()
         if category_available:
-                raise ValidationError(
-                    "Данная категория уже существует"
-                )
+            self.add_error("title", "Данная категория уже существует")

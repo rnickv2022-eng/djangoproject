@@ -6,6 +6,11 @@
     <form action="" method="post">
         {% csrf_token %}
         {{form.as_p}}
+        <h3 class="card-subtitle text-danger-emphasis mb-2">
+            {% for e in form.title.errors %}
+            {{ e }}
+            {% endfor %}
+        </h3>
         <button type="submit" class="btn btn-primary mt-3">Добавить</button>
     </form>
 {% endblock content %}
