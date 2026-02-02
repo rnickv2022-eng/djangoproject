@@ -6,13 +6,11 @@
     {% csrf_token %}
     {% for f in form %}
         {{ f }}
-        {% if f == form.title %}
-            <h3 class="card-subtitle text-danger-emphasis mb-2">
-                {% for e in form.title.errors %}
-                {{ e }}
-                {% endfor %}
-            </h3>
-        {% endif %}
+        {% for e in f.errors %}
+        <h3 class="card-subtitle text-danger-emphasis mb-2">
+            {{ e }}
+        </h3>
+        {% endfor %}
     {% endfor %}
     <button type="submit" class="btn btn-primary mt-3">Добавить</button>
 </form>
