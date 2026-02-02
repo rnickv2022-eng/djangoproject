@@ -1,6 +1,5 @@
 from django import forms
 from django_project.blog_app.models import Post, Category
-from django.core.exceptions import ValidationError
 from django_project.blog_app.management.commands import utils
 
 
@@ -46,9 +45,7 @@ class PostForm(forms.ModelForm):
         post_slug = utils.translit_1(subject)
         post_available = Post.objects.filter(slug=post_slug).exclude(pk=self.instance.pk).exists()
         if post_available:
-                raise ValidationError(
-                    "Статья с данным названием уже существует"
-                )
+            self.add_error("title", "Статья с данным названием уже существует")
 
 class CategoryForm(forms.ModelForm):
     class Meta:
@@ -68,4 +65,4 @@ class CategoryForm(forms.ModelForm):
         subject = cleaned_data.get("title")
         category_available = Category.objects.filter(title=subject).exclude(pk=self.instance.pk).exists()
         if category_available:
-            self.add_error("title", "Данная категория уже существует")
+            self.add_error("title", "Категория с данным названием уже существует")

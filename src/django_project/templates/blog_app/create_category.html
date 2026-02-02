@@ -5,7 +5,9 @@
 {% block content %}
     <form action="" method="post">
         {% csrf_token %}
-        {{form.as_p}}
+            {% for f in form %}
+            {{ f }}
+            {% endfor %}
         <h3 class="card-subtitle text-danger-emphasis mb-2">
             {% for e in form.title.errors %}
             {{ e }}
