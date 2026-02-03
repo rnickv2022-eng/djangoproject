@@ -4,14 +4,18 @@
 {% block content %}
 <form action="" method="post">
     {% csrf_token %}
+
     {% for f in form %}
+    <div class="col-md-12">
+        <label class="form-label">{{ f.label }}</label>
         {{ f }}
-        {% for e in f.errors %}
         <h3 class="card-subtitle text-danger-emphasis mb-2">
-            {{ e }}
+            {% for e in f.errors %}
+            <div class="invalid-feedback d-block">{{ e }}</div>
+            {% endfor %}
         </h3>
-        {% endfor %}
     {% endfor %}
+    </div>
     <button type="submit" class="btn btn-primary mt-3">Добавить</button>
 </form>
 {% endblock content %}
