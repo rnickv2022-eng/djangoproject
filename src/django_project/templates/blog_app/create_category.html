@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Добавление категории{% endblock %}
+
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+            {% for f in form %}
+            <label class="form-label">{{ f.label }}</label>
+            {{ f }}
+        <h3 class="card-subtitle text-danger-emphasis mb-2">
+            {% for e in f.errors %}
+            <div class="invalid-feedback d-block">{{ e }}</div>
+            {% endfor %}
+        </h3>
+            {% endfor %}
+        <button type="submit" class="btn btn-primary mt-3">Добавить</button>
+    </form>
+{% endblock content %}
