@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django_project.feedback_app.forms import FeedbackForm
 from django_project.feedback_app.models import Feedback
 
@@ -13,7 +13,7 @@ def feedback_page(request):
                 **data
             )
 
-            return redirect("blog:index")
+            return render(request, "feedback_app/success_page.html")
 
     else:
         form = FeedbackForm()
