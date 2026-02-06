@@ -26,8 +26,7 @@ class FeedbackForm(forms.Form):
         choices=SUBJECTS_LIST,
         widget=forms.Select(
             attrs={
-                "class": "form-control",
-                "placeholder": "Введите ваше имя",
+                "class": "form-select",
             }
         )
     )
