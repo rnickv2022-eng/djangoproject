@@ -1,6 +1,15 @@
 from django import forms
 
 class FeedbackForm(forms.Form):
+
+    SUBJECTS_LIST = [
+        ("Жалоба","Жалоба"),
+        ("Благодарность","Благодарность"),
+        ("Предложение","Предложение"),
+        ("Пожелание","Пожелание"),
+        ("Прочее","Прочее"),
+    ]
+
     name = forms.CharField(
         label="Ваше имя",
         max_length=100,
@@ -8,6 +17,16 @@ class FeedbackForm(forms.Form):
             attrs={
                     "class": "form-control",
                     "placeholder": "Введите ваше имя",
+            }
+        )
+    )
+
+    subject = forms.ChoiceField(
+        label="Тема",
+        choices=SUBJECTS_LIST,
+        widget=forms.Select(
+            attrs={
+                "class": "form-select",
             }
         )
     )
