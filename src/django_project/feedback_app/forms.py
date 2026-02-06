@@ -24,6 +24,12 @@ class FeedbackForm(forms.Form):
     subject = forms.ChoiceField(
         label="Тема",
         choices=SUBJECTS_LIST,
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Введите ваше имя",
+            }
+        )
     )
 
     email = forms.EmailField(
