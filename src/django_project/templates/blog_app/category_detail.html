@@ -3,8 +3,8 @@
 
 
 {% block content %}
-<h1>Категория: {{category_name}}</h1>
-<a class="btn btn-outline-secondary" href="{% url "blog:category_edit" category_id %}">Редактировать</a>
+<h1>Категория: {{category.title}} </h1>
+<a class="btn btn-outline-secondary" href="{% url "blog:category_edit" category.id %}">Редактировать</a>
     <div class="row">
         {% for post in posts %}
         <div class="col-md-12 mb-3">
@@ -26,6 +26,9 @@
         {% empty %}
             <p>Статей пока нет</p>
         {% endfor %}
+
+    {% include "blog_app/includes/pagination.html" %}
+
     </div>
 
 {% endblock %}
