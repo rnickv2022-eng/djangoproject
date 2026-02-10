@@ -18,6 +18,7 @@
     <a class="btn btn-outline-secondary" href="{% url "blog:post_list" %}">К списку статей</a>
     <a class="btn btn-outline-secondary" href="{% url "blog:categories_list" %}">К списку категорий</a>
     <a class="btn btn-outline-secondary" href="{% url "blog:post_edit" post.slug %}">Редактировать</a>
+    <a class="btn btn-outline-secondary" href="{% url "blog:post_delete" post.slug %}">Удалить</a>
 </div>
 
 {% endblock %}

@@ -1,21 +1,20 @@
-from django.shortcuts import render
+from django.urls import reverse_lazy
+
 from django_project.feedback_app.forms import FeedbackForm
+from django.views.generic import TemplateView, FormView
+
 from django_project.feedback_app.models import Feedback
 
-def feedback_page(request):
-    if request.method == "POST":
-        form = FeedbackForm(request.POST)
 
-        if form.is_valid():
-            data = form.cleaned_data
+class FeedbackCreateView(FormView):
+    template_name = 'feedback_app/feedback_page.html'
+    form_class = FeedbackForm
+    success_url = reverse_lazy('feedback:success')
 
-            Feedback.objects.create(
-                **data
-            )
+    def form_valid(self, form):
+        Feedback.objects.create(**form.cleaned_data)
+        return super().form_valid(form)
 
-            return render(request, "feedback_app/success_page.html")
 
-    else:
-        form = FeedbackForm()
-
-    return render(request, "feedback_app/feedback_page.html",context={"form": form})
+class SuccessFeedbackView(TemplateView):
+    template_name = 'feedback_app/success_page.html'
