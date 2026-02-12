@@ -6,7 +6,7 @@ from django_project.blog_app.management.commands import utils
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ["title","author","content","topic","published"]
+        fields = ["title","content","topic","published"]
         widgets = {
             "title": forms.TextInput(
                 attrs={
@@ -14,17 +14,11 @@ class PostForm(forms.ModelForm):
                     "placeholder": "Введите название статьи",
                 }
             ),
-            "author": forms.Select(
-                attrs={
-                    "class": "form-select"
-                }
-            ),
             "cathegory": forms.Select(
                 attrs={
                     "class": "form-select"
                 }
             ),
-
             "content": forms.Textarea(
                 attrs={
                     "class": "form-control",

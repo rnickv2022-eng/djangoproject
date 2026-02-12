@@ -1,4 +1,6 @@
 from django.urls import reverse_lazy
+
+from django_project.blog_app.mixins import TitleMixin, StaffRequiredMixin
 from django_project.blog_app.models import Post
 from django_project.blog_app.models import Category
 from django_project.blog_app.forms import PostForm,CategoryForm
@@ -6,8 +8,9 @@ from django_project.blog_app.management.commands import utils
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 
-class IndexView(TemplateView):
+class IndexView(TitleMixin, TemplateView):
     template_name = "blog_app/index.html"
+    title = "Самая главная страница"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -53,17 +56,16 @@ class CategoriesDetailView(ListView):
         context['category'] = Category.objects.get(pk=self.kwargs['category_id'])
         return context
 
-class PostCreateView(CreateView):
+class PostCreateView(StaffRequiredMixin, CreateView):
     model = Post
     template_name = "blog_app/create_post.html"
-    slug_url_kwarg = "post_slug"
-    context_object_name = "post"
     form_class = PostForm
     success_url = reverse_lazy('blog:post_list')
 
 #  4  TODO  разобраться  в документации Джанго как эта функция работает
     def form_valid(self, form):
         form.instance.slug = utils.translit_1(form.cleaned_data["title"])
+        form.instance.author = self.request.user
         return super().form_valid(form)
 
 class CategoryCreateView(CreateView):
