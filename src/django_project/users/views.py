@@ -5,8 +5,10 @@ from django.http import HttpResponseForbidden
 from django_project.users.forms import UserForm
 from django.views.generic import UpdateView, TemplateView, DetailView
 
+
 class ProfileDetailBase:
     model = Profile
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponseForbidden("Вы не зарегистрированы")
@@ -17,14 +19,12 @@ class ProfileDetailBase:
         return profile
 
 
-class ProfileDetailView(ProfileDetailBase,DetailView):
-
+class ProfileDetailView(ProfileDetailBase, DetailView):
     context_object_name = "user"
     template_name = "users/detail_profile.html"
 
 
-class ProfileUpdateView(ProfileDetailBase,UpdateView):
-
+class ProfileUpdateView(ProfileDetailBase, UpdateView):
     form_class = UserForm
     template_name = "users/update_profile.html"
     success_url = reverse_lazy("users:success")
