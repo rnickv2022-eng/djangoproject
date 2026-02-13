@@ -10,12 +10,12 @@ class UserForm(forms.ModelForm):
             "bio": forms.Textarea(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Введите биографию",
+                    "placeholder": "Коротко о себе",
                 }
             ),
             "social_link": forms.URLInput(
                 attrs={
-                    "class": "form-select",
+                    "class": "form-control",
                     "placeholder": "Введите домашний сайт",
                 }
             )
