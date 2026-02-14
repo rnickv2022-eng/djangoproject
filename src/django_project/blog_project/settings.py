@@ -131,3 +131,6 @@ JAZZMIN_SETTINGS = {
     ],
 
 }
+
+LOGIN_REDIRECT_URL = "users:profile_page"
+LOGOUT_REDIRECT_URL = "blog:index"
