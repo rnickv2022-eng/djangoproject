@@ -2,8 +2,8 @@ from django.urls import reverse_lazy
 
 from django_project.users.models import Profile
 from django.http import HttpResponseForbidden
-from django_project.users.forms import UserForm
-from django.views.generic import UpdateView, TemplateView, DetailView
+from django_project.users.forms import UserForm, CustomCreationForm
+from django.views.generic import UpdateView, TemplateView, DetailView, CreateView
 
 
 class ProfileDetailBase:
@@ -30,5 +30,10 @@ class ProfileUpdateView(ProfileDetailBase, UpdateView):
     success_url = reverse_lazy("users:success")
 
 
-class SuccessFeedbackView(TemplateView):
+class SuccessProfileView(TemplateView):
     template_name = 'users/success_page.html'
+
+class RegisterUserView(CreateView):
+    form_class = CustomCreationForm
+    template_name = 'users/register.html'
+    success_url = reverse_lazy("users:success")
