@@ -18,9 +18,11 @@
                     {% endif %}
                 </div>
             {% endfor %}
-
             <button type="submit" class="btn btn-primary">Войти</button>
         </form>
+        <p>
+        <a href="{% url "users:password_reset" %}">Забыли пароль</a>
+        </p>
     </div>
 </div>
 

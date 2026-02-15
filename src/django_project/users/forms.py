@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django_project.users.models import Profile
 
@@ -73,3 +73,25 @@ class CustomCreationForm(UserCreationForm):
         if User.objects.filter(email__iexact=email).exists():
             raise forms.ValidationError("Пользователь с таким Email уже зарегистрирован")
         return email
+
+class CustomLoginForm(AuthenticationForm):
+    username = forms.CharField(
+        label="Имя пользователя",
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Введите имя",
+                "autocomplete": "username",
+            }
+        )
+    )
+    password = forms.CharField(
+        label="Пароль",
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Придумайте пароль",
+                "autocomplete": "new-password",
+            }
+        )
+    )

@@ -1,8 +1,9 @@
+from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 
 from django_project.users.models import Profile
 from django.http import HttpResponseForbidden
-from django_project.users.forms import UserForm, CustomCreationForm
+from django_project.users.forms import UserForm, CustomCreationForm, CustomLoginForm
 from django.views.generic import UpdateView, TemplateView, DetailView, CreateView
 
 
@@ -37,3 +38,8 @@ class RegisterUserView(CreateView):
     form_class = CustomCreationForm
     template_name = 'users/register.html'
     success_url = reverse_lazy("users:success")
+
+class CustomLoginView(LoginView):
+     form_class = CustomLoginForm
+     template_name = 'users/login.html'
+     success_url = reverse_lazy("users:success")

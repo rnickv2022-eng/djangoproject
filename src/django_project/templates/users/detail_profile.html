@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% block title %}{{post.title}} - {{block.super}}{% endblock %}
+{% block title %}Обо  мне{% endblock %}
 
 {% block content %}
+ {% csrf_token %}
 <article>
     <h1>Пользователь: {{user.user}}</h1>
     <br>
