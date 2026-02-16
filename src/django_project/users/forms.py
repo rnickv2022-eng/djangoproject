@@ -90,8 +90,8 @@ class CustomLoginForm(AuthenticationForm):
         widget=forms.PasswordInput(
             attrs={
                 "class": "form-control",
-                "placeholder": "Придумайте пароль",
-                "autocomplete": "new-password",
+                "placeholder": "Введите свой пароль",
+                "autocomplete": "current-password",
             }
         )
     )
