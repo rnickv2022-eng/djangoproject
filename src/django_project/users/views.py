@@ -21,7 +21,7 @@ class ProfileDetailBase:
 
 
 class ProfileDetailView(ProfileDetailBase, DetailView):
-    context_object_name = "user"
+    context_object_name = "user_detail"
     template_name = "users/detail_profile.html"
 
 
