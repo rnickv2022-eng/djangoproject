@@ -134,3 +134,5 @@ JAZZMIN_SETTINGS = {
 
 LOGIN_REDIRECT_URL = "users:profile_page"
 LOGOUT_REDIRECT_URL = "blog:index"
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
