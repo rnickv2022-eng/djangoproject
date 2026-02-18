@@ -4,10 +4,13 @@ from django.contrib.auth.models import User
 from django_project.users.models import Profile
 
 
-class UserForm(forms.ModelForm):
+class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ["bio","social_link"]
+        fields = ["bio","social_link","avatar"]
+        widgets = {
+            "bio": forms.TextInput()
+        }
         widgets = {
             "bio": forms.Textarea(
                 attrs={
@@ -19,6 +22,11 @@ class UserForm(forms.ModelForm):
                 attrs={
                     "class": "form-control",
                     "placeholder": "Введите домашний сайт",
+                }
+            ),
+            "avatar": forms.ClearableFileInput(
+                attrs={
+                    "class": "form-control"
                 }
             )
         }

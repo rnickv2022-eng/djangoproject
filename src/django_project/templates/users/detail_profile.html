@@ -5,6 +5,9 @@
 <article>
     <h1>Пользователь: {{user_detail.user}}</h1>
     <br>
+    {%if user_detail.avatar %}
+    <img src="{{ user_detail.avatar.url }}" alt="Автатар {{user_detail.user}}" class="rounded-circle mb-3" width="150px" height="150px">
+    {% endif %}
     <div class="post-content">
     <h3>Коротко о себе:</h3>
     </div>
@@ -17,7 +20,7 @@
 </article>
 
 <div class="mt-4">
-   <a class="btn btn-outline-secondary" href="{% url "users:update_page"%}">Изменить</a>
+   <a class="btn btn-outline-secondary" href="{% url "users:update_page" %}">Изменить профиль</a>
 </div>
 
 {% endblock %}

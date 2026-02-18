@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 
 from django_project.users.models import Profile
 from django.http import HttpResponseForbidden
-from django_project.users.forms import UserForm, CustomCreationForm, CustomLoginForm
+from django_project.users.forms import ProfileForm, CustomCreationForm, CustomLoginForm
 from django.views.generic import UpdateView, TemplateView, DetailView, CreateView
 
 
@@ -26,7 +26,7 @@ class ProfileDetailView(ProfileDetailBase, DetailView):
 
 
 class ProfileUpdateView(ProfileDetailBase, UpdateView):
-    form_class = UserForm
+    form_class = ProfileForm
     template_name = "users/update_profile.html"
     success_url = reverse_lazy("users:success")
 
