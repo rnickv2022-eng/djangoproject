@@ -6,7 +6,7 @@ from django_project.blog_app.management.commands import utils
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ["title","content","topic","published"]
+        fields = ["title","content","topic","published","image"]
         widgets = {
             "title": forms.TextInput(
                 attrs={
@@ -30,8 +30,12 @@ class PostForm(forms.ModelForm):
                 attrs={
                     "class": "form-check-input"
                 }
+            ),
+            "image": forms.ClearableFileInput(
+                attrs={
+                    "class": "form-control"
+                }
             )
-
         }
     def clean(self):
         cleaned_data = super().clean()
