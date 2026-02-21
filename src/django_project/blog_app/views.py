@@ -1,4 +1,4 @@
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from django_project.blog_app.mixins import TitleMixin, StaffRequiredMixin
 from django_project.blog_app.models import Post
@@ -60,7 +60,9 @@ class PostCreateView(StaffRequiredMixin, CreateView):
     model = Post
     template_name = "blog_app/create_post.html"
     form_class = PostForm
-    success_url = reverse_lazy('blog:post_list')
+    def get_success_url(self):
+        return reverse("blog:post_detail", args=[self.object.slug])
+
 
 #  4  TODO  разобраться  в документации Джанго как эта функция работает
     def form_valid(self, form):
@@ -68,7 +70,7 @@ class PostCreateView(StaffRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(StaffRequiredMixin, CreateView):
     model = Category
     form_class = CategoryForm
     pk_url_kwarg = "category_id"

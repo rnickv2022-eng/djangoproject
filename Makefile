@@ -27,3 +27,15 @@ update_post:
 
 delete_post:
 	uv run ./src/django_project/manage.py delete_post
+
+test_blog_app:
+	uv run ./src/django_project/manage.py test blog_app
+
+test_feedback_app:
+	uv run ./src/django_project/manage.py test feedback_app
+
+test:
+	uv run ./src/django_project/manage.py test
+
+test_verbose:
+	uv run ./src/django_project/manage.py test -v 2

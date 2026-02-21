@@ -6,6 +6,7 @@ from PIL import Image
 class Category(models.Model):
     title = models.CharField(max_length=100,verbose_name="Название")
     slug = models.SlugField(unique=True)
+    objects = models.Manager()
 
     class Meta:
         verbose_name = "Категория"
@@ -27,8 +28,9 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True,verbose_name="Дата публикации")
     updated_at = models.DateTimeField(auto_now=True,verbose_name="Дата обновления")
     views_count = models.PositiveIntegerField(default=0,verbose_name="Количестиво просмотров")
-    topic = models.ForeignKey(Category,on_delete=models.CASCADE,default=1, null=True,related_name="posts",verbose_name="Категории")
+    topic = models.ForeignKey(Category,on_delete=models.CASCADE,blank=True, null=True,related_name="posts",verbose_name="Категории")
     image = models.ImageField(upload_to="posts/", blank=True, null=True, verbose_name="Обложка")
+    objects = models.Manager()
 
     class Meta:
         verbose_name = "Статья"
