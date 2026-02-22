@@ -51,6 +51,6 @@ class Post(models.Model):
         super().save(*args, **kwargs)
         if self.image:
             img = Image.open(self.image.path)
-            if img.height > 300 or img.width > 300:
-                img.thumbnail((300, 300))
+            if img.height > 1200 or img.width > 1200:
+                img.thumbnail((1200, 1200))
                 img.save(self.image.path)
