@@ -32,6 +32,5 @@ class CategoryModelsTest(TestCase):
         self.assertEqual(str(self.category), "test-category-title")
 
     def test_category_creation_duo(self):
-        Category.objects.create(title="test-category-title-1", slug="test-category-slug-1")
         with self.assertRaises(IntegrityError):
-            Category.objects.create(title="test-category-title-1", slug="test-category-slug-1")
+            self.category_second = Category.objects.create(title="test-category-title", slug="test-category-slug")

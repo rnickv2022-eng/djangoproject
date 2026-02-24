@@ -2,8 +2,6 @@ from django.test import TestCase
 from django_project.feedback_app.models import Feedback
 
 class FeedbackFormTest(TestCase):
-    def setUp(self):
-        pass
 
     def test_feedback_detail_context(self):
         first_amount_feedback = Feedback.objects.count()
