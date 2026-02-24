@@ -12,7 +12,7 @@ class FeedbackFormTest(TestCase):
         }
                                     )
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(1, Feedback.objects.count())
+        self.assertEqual(Feedback.objects.count(),1)
 
     def test_feedback_detail_incorrect(self):
         response = self.client.post("/feedback/", {
@@ -25,4 +25,4 @@ class FeedbackFormTest(TestCase):
         self.assertEqual(response.status_code, 200)
         form = response.context["form"]
         self.assertFalse(form.is_valid())
-        self.assertEqual(0, Feedback.objects.count())
+        self.assertEqual(Feedback.objects.count(), 0)
