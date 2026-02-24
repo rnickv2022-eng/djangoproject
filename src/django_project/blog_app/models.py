@@ -18,7 +18,6 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse("blog:category_detail", args=[self.id])
 
-
 class Post(models.Model):
     title = models.CharField(max_length=255,verbose_name="Название")
     slug = models.SlugField(unique=True)

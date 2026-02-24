@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy, reverse
 
 from django_project.blog_app.mixins import TitleMixin, StaffRequiredMixin
@@ -53,7 +54,7 @@ class CategoriesDetailView(ListView):
 #  3 TODO  разобраться  в документации Джанго как эта функция работает
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['category'] = Category.objects.get(pk=self.kwargs['category_id'])
+        context['category'] = get_object_or_404(Category,pk=self.kwargs['category_id'])
         return context
 
 class PostCreateView(StaffRequiredMixin, CreateView):

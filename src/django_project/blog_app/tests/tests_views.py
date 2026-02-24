@@ -45,3 +45,28 @@ class PostViewsTest(TestCase):
         response = self.client.get(reverse("blog:index"))
         self.assertNotContains(response, "test-title2")
         self.assertContains(response, "test-title")
+
+class CreateViewsTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="test-user", password="123456789q")
+        self.category_first = Category.objects.create(title="test-category-first", slug="test-category-first")
+        self.category_second = Category.objects.create(title="test-category-second", slug="test-category-second")
+        self.post_first = Post.objects.create(title="test-title-first", slug="test-slug-first", content="test-content",
+                                        topic=self.category_first, author=self.user, published=True)
+        self.post_second = Post.objects.create(title="test-title-second", slug="test-slug-second", content="test-content",
+                                         topic=self.category_second, author=self.user, published=True)
+
+    def  test_filter_category(self):
+        response = self.client.get(f"/categories/{self.category_first.id}/")
+        self.assertContains(response, "test-title-first")
+        self.assertNotContains(response, "test-title-second")
+        response = self.client.get(f"/categories/{self.category_second.id}/")
+        self.assertContains(response, "test-title-second")
+        self.assertNotContains(response, "test-title-first")
+
+
+    def test_category_id_nothing(self):
+        last_obj = Category.objects.last()
+        new_id =  int(last_obj.pk +  100)
+        response = self.client.get(f"/categories/{new_id}/")
+        self.assertEqual(response.status_code, 404)
