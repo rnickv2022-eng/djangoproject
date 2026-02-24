@@ -64,7 +64,7 @@ class CreateViewsTest(TestCase):
         self.assertContains(response, "test-title-second")
         self.assertNotContains(response, "test-title-first")
 
-    # TODO  Dont work!
+
     def test_category_id_nothing(self):
         last_obj = Category.objects.last()
         new_id =  int(last_obj.pk +  100)
