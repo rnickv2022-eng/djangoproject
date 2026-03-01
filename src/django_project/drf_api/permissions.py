@@ -6,14 +6,10 @@ class IsAdminUserOrReadOnly(BasePermission):
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
-        if request.user.is_staff:
-            return True
-        return False
+        return request.user.is_staff
 
 class IsAuthorOrReadOnly(BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS:
             return True
-        if request.user == obj.author:
-            return True
-        return False
+        return obj.author == request.user
