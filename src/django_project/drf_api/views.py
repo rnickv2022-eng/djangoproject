@@ -1,11 +1,14 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.permissions import IsAuthenticated
+
 from django_project.blog_app.management.commands import utils
 
 from django_project.blog_app.models import Post, Category
 from django_project.drf_api.permissions import IsAdminUserOrReadOnly, IsAuthorOrReadOnly
-from django_project.drf_api.serializers import PostSerializer, CategorySerializer
+from django_project.drf_api.serializers import PostSerializer, CategorySerializer, FeedbackSerializer
+from django_project.feedback_app.models import Feedback
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -43,3 +46,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
         title = serializer.validated_data["title"]
         slug = utils.translit_1(title)
         serializer.save(slug=slug)
+
+class FeedbackCreateAPIView(generics.CreateAPIView):
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(name=self.request.user)
