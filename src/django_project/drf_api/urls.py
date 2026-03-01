@@ -1,12 +1,16 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
-from django_project.drf_api.views import PostListCreateAPIView, PostRetrieveUpdateDestroyAPIView, \
+from django_project.drf_api.views import PostViewSet, \
     CategoryListCreateAPIView, CategoryRetrieveUpdateDestroyAPIView
 
 app_name = "drf_api"
+
+router = DefaultRouter()
+router.register("posts", PostViewSet)
+
 urlpatterns = [
-    path("posts/", PostListCreateAPIView.as_view(), name="post_list_create"),
-    path("posts/<int:pk>/", PostRetrieveUpdateDestroyAPIView.as_view(), name="post_detail"),
+    path("", include(router.urls)),
     path("categories/", CategoryListCreateAPIView.as_view(), name="category_list_create"),
     path("categories/<int:pk>/", CategoryRetrieveUpdateDestroyAPIView.as_view(), name="category_detail"),
 ]
