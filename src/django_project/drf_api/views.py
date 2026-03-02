@@ -8,7 +8,6 @@ from django_project.blog_app.management.commands import utils
 from django_project.blog_app.models import Post, Category
 from django_project.drf_api.permissions import IsAdminUserOrReadOnly, IsAuthorOrReadOnly
 from django_project.drf_api.serializers import PostSerializer, CategorySerializer, FeedbackSerializer
-from django_project.feedback_app.models import Feedback
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -48,7 +47,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
         serializer.save(slug=slug)
 
 class FeedbackCreateAPIView(generics.CreateAPIView):
-    queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
     permission_classes = [IsAuthenticated]
 

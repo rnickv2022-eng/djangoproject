@@ -1,4 +1,3 @@
-from django.utils import timezone
 from rest_framework import serializers
 from django_project.blog_app.models import Post, Category
 from django_project.feedback_app.models import Feedback
@@ -24,5 +23,4 @@ class FeedbackSerializer(serializers.Serializer):
     created_at = serializers.DateTimeField(read_only=True)
 
     def create(self, validated_data):
-        validated_data['created_at'] = timezone.now()
         return Feedback.objects.create(**validated_data)
