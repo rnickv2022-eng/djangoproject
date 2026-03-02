@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import serializers
 from django_project.blog_app.models import Post, Category
 from django_project.feedback_app.models import Feedback
@@ -15,8 +16,13 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ("id", "title", "slug")
         read_only_fields = ("slug",)
 
-class FeedbackSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Feedback
-        fields = ("name", "subject", "email", "message", "created_at")
-        read_only_fields = ("created_at","name")
+class FeedbackSerializer(serializers.Serializer):
+    name = serializers.CharField(read_only=True)
+    subject = serializers.CharField()
+    email = serializers.EmailField()
+    message = serializers.CharField()
+    created_at = serializers.DateTimeField(read_only=True)
+
+    def create(self, validated_data):
+        validated_data['created_at'] = timezone.now()
+        return Feedback.objects.create(**validated_data)
