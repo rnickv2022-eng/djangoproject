@@ -16,11 +16,9 @@ class CategorySerializer(serializers.ModelSerializer):
         read_only_fields = ("slug",)
 
 class FeedbackSerializer(serializers.Serializer):
-    name = serializers.CharField(read_only=True)
     subject = serializers.CharField()
     email = serializers.EmailField()
     message = serializers.CharField()
-    created_at = serializers.DateTimeField(read_only=True)
 
     def create(self, validated_data):
         return Feedback.objects.create(**validated_data)
