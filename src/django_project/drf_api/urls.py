@@ -13,5 +13,5 @@ router.register("categories", CategoryViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("feedback/", views.FeedbackCreateAPIView.as_view(), name="feedback"),
+    path("feedback/", views.FeedbackCreateSecondAPIView.as_view(), name="feedback"),
 ]
