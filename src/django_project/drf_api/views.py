@@ -63,6 +63,5 @@ class FeedbackCreateSecondAPIView(views.APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.create(serializer.validated_data)
         serializer.save(name=self.request.user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
