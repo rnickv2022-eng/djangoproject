@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django_project.blog_app.models import Post, Category
+from django_project.feedback_app.models import Feedback
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -13,3 +14,11 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ("id", "title", "slug")
         read_only_fields = ("slug",)
+
+class FeedbackSerializer(serializers.Serializer):
+    subject = serializers.CharField()
+    email = serializers.EmailField()
+    message = serializers.CharField()
+
+    def create(self, validated_data):
+        return Feedback.objects.create(**validated_data)
