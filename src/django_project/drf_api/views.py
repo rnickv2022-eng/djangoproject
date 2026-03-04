@@ -64,4 +64,9 @@ class FeedbackCreateSecondAPIView(views.APIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(name=self.request.user)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        data = {
+            "result": serializer.data,
+            "message": "success",
+            "status":status.HTTP_201_CREATED
+        }
+        return Response(data)
