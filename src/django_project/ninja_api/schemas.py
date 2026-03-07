@@ -31,3 +31,10 @@ class FeedbackInSchema(Schema):
 class FeedbackOutSchema(FeedbackInSchema):
     id: int
     created_at: datetime
+
+class PostSearchOutSchema(Schema):
+    id: int
+    title: str
+    slug: str
+    headline: str
+    rank: float
