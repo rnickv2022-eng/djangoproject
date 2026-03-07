@@ -1,10 +1,12 @@
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchHeadline, SearchRank
 from django.http import HttpResponse
 from ninja import NinjaAPI
 from django_project.blog_app.management.commands import utils
 
 from django_project.blog_app.models import Post
 from django_project.feedback_app.models import Feedback
-from django_project.ninja_api.schemas import PostInSchema, PostOutSchema, FeedbackOutSchema, FeedbackInSchema
+from django_project.ninja_api.schemas import PostInSchema, PostOutSchema, FeedbackOutSchema, FeedbackInSchema, \
+    PostSearchOutSchema
 
 router = NinjaAPI(
     version="1.0.0",
@@ -27,6 +29,24 @@ async def posts_list(request, search: str | None=None, category_id: int | None=N
         qs = qs.filter(topic=category_id)
 
     return [post async for post in qs]
+
+@router.get("/posts/search", response=list[PostSearchOutSchema])
+async def search_posts(request, query: str) -> list[PostSearchOutSchema]:
+    vector = SearchVector("title", weight="A", config="russian") + SearchVector("content", weight="B", config="russian")
+    search_query = SearchQuery(query, config="russian")
+    headline = SearchHeadline("content", search_query, config="russian", max_words=15, min_words=1)
+    qs = Post.objects.annotate(rank=SearchRank(vector,search_query), headline=headline).filter(rank__gte=0.1).order_by("-rank")
+    results = [
+        PostSearchOutSchema(
+            id=post.pk,
+            title=post.title,
+            slug=post.slug,
+            headline=post.headline,
+            rank=post.rank
+        )
+        async for post in qs
+    ]
+    return results
 
 @router.get("/posts/{post_id}", response=PostOutSchema)
 async def get_post(request, post_id:int) -> PostOutSchema | HttpResponse:

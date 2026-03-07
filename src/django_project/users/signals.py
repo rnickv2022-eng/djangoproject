@@ -6,5 +6,7 @@ from django_project.users.models import Profile
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
-   if created:
-       Profile.objects.create(user=instance)
+    if kwargs.get("raw", False):
+        return
+    if created:
+        Profile.objects.create(user=instance)
