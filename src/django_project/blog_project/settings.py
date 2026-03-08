@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "blog_app",
     "feedback_app",
     "users",
-     "drf_api",
+    "drf_api",
     "ninja_api"
 ]
 
