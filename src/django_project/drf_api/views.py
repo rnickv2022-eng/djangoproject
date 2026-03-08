@@ -1,5 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, generics, status
+from rest_framework import viewsets, generics
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -11,6 +11,8 @@ from django_project.drf_api.permissions import IsAdminUserOrReadOnly, IsAuthorOr
 from django_project.drf_api.serializers import PostSerializer, CategorySerializer, FeedbackSerializer
 
 from rest_framework import views
+
+from django_project.feedback_app.models import Feedback
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -63,10 +65,14 @@ class FeedbackCreateSecondAPIView(views.APIView):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(name=self.request.user)
+        feedback = Feedback.objects.create(
+            name=self.request.user,
+            subject = serializer.validated_data["subject"],
+            email=serializer.validated_data["email"],
+            message=serializer.validated_data["message"]
+        )
         data = {
-            "result": serializer.data,
-            "message": "success",
-            "status":status.HTTP_201_CREATED
+            "status": "success",
+            "id":feedback.pk
         }
         return Response(data)

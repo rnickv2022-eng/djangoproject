@@ -55,6 +55,9 @@ restore:
 create_db:
 	docker run --name blog_db -e POSTGRES_USER=myuser -e POSTGRES_PASSWORD=mypassword -e POSTGRES_DB=mydb -p 5432:5432 -v blog_db_data:/var/lib/postgresql/data -d postgres:17
 
+start_db:
+	docker start blog_db
+
 stop_db:
 	docker stop blog_db
 
