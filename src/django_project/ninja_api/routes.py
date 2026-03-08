@@ -3,10 +3,10 @@ from django.http import HttpResponse
 from ninja import NinjaAPI
 from django_project.blog_app.management.commands import utils
 
-from django_project.blog_app.models import Post
+from django_project.blog_app.models import Post, Category
 from django_project.feedback_app.models import Feedback
 from django_project.ninja_api.schemas import PostInSchema, PostOutSchema, FeedbackOutSchema, FeedbackInSchema, \
-    PostSearchOutSchema
+    PostSearchOutSchema, CategoryInSchema, CategoryOutSchema
 
 router = NinjaAPI(
     version="1.0.0",
@@ -64,3 +64,35 @@ async def create_post(request, payload: PostInSchema) -> PostOutSchema:
 @router.post("/feedback", response=FeedbackOutSchema)
 async def create_feedback(request, payload: FeedbackInSchema) -> FeedbackOutSchema:
     return await Feedback.objects.acreate(**payload.model_dump())
+
+@router.get("/categories", response=list[CategoryOutSchema])
+async def categories_list(request, search_title: str | None=None, category_id: int | None=None) -> list[CategoryOutSchema]:
+    qs = Category.objects.all()
+    if search_title:
+        qs = qs.filter(title__icontains=search_title)
+
+    if category_id:
+        qs = qs.filter(id=category_id)
+
+    return [category async for category in qs]
+
+@router.post("/categories", response=CategoryInSchema)
+async def create_category(request, payload: CategoryInSchema) -> CategoryOutSchema:
+    data = payload.model_dump()
+    return await Category.objects.acreate(**data,slug=utils.translit_1(payload.title))
+
+@router.get("/categories/{category_id}", response=CategoryOutSchema)
+async def get_category(request, category_id:int) -> CategoryOutSchema | HttpResponse:
+    try:
+        category = await Category.objects.aget(pk=category_id)
+        return category
+    except Category.DoesNotExist:
+        return router.create_response(request, {"detail": "Категория не найдена"}, status=404)
+
+@router.post("/categories/{category_id}/delete")
+async def delete_category(request, category_id:int) -> HttpResponse:
+    if await Category.objects.filter(id=category_id).aexists():
+        await Category.objects.filter(pk=category_id).adelete()
+        return router.create_response(request, {"detail": "Категория удалена"},status=200)
+    else:
+        return router.create_response(request, {"detail": "Категория не найдена"}, status=404)
