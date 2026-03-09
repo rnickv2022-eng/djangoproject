@@ -38,9 +38,9 @@ class Post(models.Model):
         ordering = ["created_at","published"]
         indexes = [
             GinIndex(
-                fields=["title", "content", "topic__title"],
+                fields=["title", "content"],
                 name="post_title_content_gin",
-                opclasses=["gin_trgm_ops","gin_trgm_ops","gin_trgm_ops"]
+                opclasses=["gin_trgm_ops","gin_trgm_ops"]
             ),
         ]
 
