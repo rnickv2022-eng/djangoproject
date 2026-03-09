@@ -17,3 +17,26 @@ Homework24012026
 3. category_list.html -  <a class="btn btn-outline-primary btn-sm" href="{% url "blog:category_detail" category.id %}">Перейти к категории</a> - Кнопки сделал контурными
 4. category_detail.html -  <h6 class="card-subtitle text-success-emphasis mb-2">Опубликована</h6>
 <h6 class="card-subtitle text-danger-emphasis mb-2">Неопубликована</h6> - изменил цвет в зависисмости от Опубликовано/неопубликовано
+
+## 🚀 Быстрый старт
+
+Для запуска проекта локально выполните следующие шаги:
+
+1.  **Настройка переменных окружения**:
+    Скопируйте файл с примером настроек в рабочий файл `.env`:
+    ```bash
+    cp .env.example .env
+    ```
+
+2.  **Запуск Docker-контейнеров**:
+    Соберите и запустите проект в фоновом режиме:
+    ```bash
+    docker-compose up -d --build
+    ```
+
+3.  **Применение миграций**:
+    Выполните миграции базы данных внутри запущенного контейнера:
+    ```bash
+    docker-compose exec web python manage.py migrate
+    ```
+    *(Где `web` — имя вашего сервиса из docker-compose.yml)*.
