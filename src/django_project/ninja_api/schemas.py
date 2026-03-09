@@ -18,7 +18,7 @@ class PostInSchema(ModelSchema):
 class PostOutSchema(ModelSchema):
     class Meta:
         model = Post
-        fields = ["id", "title", "slug", "content", "author", "topic", "published", "created_at"]
+        fields = ["id", "title", "slug", "content", "author", "topic", "topic_title", "published", "created_at"]
 
 class CategoryInSchema(ModelSchema):
     class Meta:
@@ -47,5 +47,7 @@ class PostSearchOutSchema(Schema):
     id: int
     title: str
     slug: str
+    topic_title: str
     headline: str
     rank: float
+    published: bool

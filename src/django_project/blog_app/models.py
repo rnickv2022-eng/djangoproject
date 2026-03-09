@@ -29,6 +29,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True,verbose_name="Дата обновления")
     views_count = models.PositiveIntegerField(default=0,verbose_name="Количестиво просмотров")
     topic = models.ForeignKey(Category,on_delete=models.CASCADE,blank=True, null=True,related_name="posts",verbose_name="Категории")
+    topic_title = models.CharField(max_length=100,verbose_name="Название категории")
     image = models.ImageField(upload_to="posts/", blank=True, null=True, verbose_name="Обложка")
     objects = models.Manager()
 
@@ -38,9 +39,9 @@ class Post(models.Model):
         ordering = ["created_at","published"]
         indexes = [
             GinIndex(
-                fields=["title", "content"],
+                fields=["title", "content", "topic_title"],
                 name="post_title_content_gin",
-                opclasses=["gin_trgm_ops","gin_trgm_ops"]
+                opclasses=["gin_trgm_ops","gin_trgm_ops","gin_trgm_ops"]
             ),
         ]
 
@@ -55,6 +56,10 @@ class Post(models.Model):
         return reverse("blog:post_detail", args=[self.slug])
 
     def save(self, *args, **kwargs):
+        if self.topic:
+            self.topic_title = self.topic.title
+        else:
+            self.topic_title = ""
         super().save(*args, **kwargs)
         if self.image:
             img = Image.open(self.image.path)
