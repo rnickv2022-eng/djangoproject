@@ -31,18 +31,21 @@ async def posts_list(request, search: str | None=None, category_id: int | None=N
     return [post async for post in qs]
 
 @router.get("/posts/search", response=list[PostSearchOutSchema])
-async def search_posts(request, query: str) -> list[PostSearchOutSchema]:
-    vector = SearchVector("title", weight="A", config="russian") + SearchVector("content", weight="B", config="russian")
+async def search_posts(request, query: str, publ: bool | None=None) -> list[PostSearchOutSchema]:
+    vector = SearchVector("title", weight="A", config="russian") + SearchVector("content", weight="B", config="russian") + SearchVector("topic__title", weight="C", config="russian")
     search_query = SearchQuery(query, config="russian")
     headline = SearchHeadline("content", search_query, config="russian", max_words=15, min_words=1)
-    qs = Post.objects.annotate(rank=SearchRank(vector,search_query), headline=headline).filter(rank__gte=0.1).order_by("-rank")
+    qs = Post.objects.annotate(rank=SearchRank(vector, search_query), headline=headline).filter(rank__gte=0.1).order_by("-rank")
+    if publ is not None:
+        qs = qs.filter(published=publ)
     results = [
         PostSearchOutSchema(
             id=post.pk,
             title=post.title,
             slug=post.slug,
             headline=post.headline,
-            rank=post.rank
+            rank=post.rank,
+            published=post.published
         )
         async for post in qs
     ]

@@ -49,3 +49,4 @@ class PostSearchOutSchema(Schema):
     slug: str
     headline: str
     rank: float
+    published: bool
