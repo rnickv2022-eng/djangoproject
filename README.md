@@ -35,8 +35,15 @@ Homework24012026
     ```
 
 3.  **Применение миграций**:
-    Выполните миграции базы данных внутри запущенного контейнера:
+    Выполните запуск сервера базы данных:
     ```bash
-    docker-compose exec web python manage.py migrate
+    make start_db
     ```
-    *(Где `web` — имя вашего сервиса из docker-compose.yml)*.
+    Подготовьте миграции:
+    ```bash
+    make makemigrations
+    ```
+    Примените миграции:
+    ```bash
+    make migrate
+    ```
