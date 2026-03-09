@@ -41,7 +41,6 @@ async def search_posts(request, query: str, publ: bool) -> list[PostSearchOutSch
             id=post.pk,
             title=post.title,
             topic=post.topic,
-            topic__title=post.topic__title,
             slug=post.slug,
             headline=post.headline,
             rank=post.rank,

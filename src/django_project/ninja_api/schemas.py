@@ -48,7 +48,6 @@ class PostSearchOutSchema(Schema):
     title: str
     slug: str
     topic: int
-    topic__title: str
     headline: str
     rank: float
     published: bool
