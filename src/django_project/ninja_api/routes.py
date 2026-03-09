@@ -35,10 +35,9 @@ async def search_posts(request, query: str, publ: bool | None=None) -> list[Post
     vector = SearchVector("title", weight="A", config="russian") + SearchVector("content", weight="B", config="russian") + SearchVector("topic__title", weight="C", config="russian")
     search_query = SearchQuery(query, config="russian")
     headline = SearchHeadline("content", search_query, config="russian", max_words=15, min_words=1)
-    if publ is True or publ is False:
-        qs = Post.objects.annotate(rank=SearchRank(vector,search_query), headline=headline).filter(published=publ,rank__gte=0.1).order_by("-rank")
-    else:
-        qs = Post.objects.annotate(rank=SearchRank(vector, search_query), headline=headline).filter(rank__gte=0.1).order_by("-rank")
+    qs = Post.objects.annotate(rank=SearchRank(vector, search_query), headline=headline).filter(rank__gte=0.1).order_by("-rank")
+    if publ:
+        qs = qs.filter(published=publ)
     results = [
         PostSearchOutSchema(
             id=post.pk,
