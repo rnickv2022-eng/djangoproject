@@ -5,6 +5,7 @@ from django_project.blog_app.management.commands import utils
 
 from django_project.blog_app.models import Post, Category
 from django_project.feedback_app.models import Feedback
+from django_project.ninja_api.auth_routes import auth_router
 from django_project.ninja_api.schemas import PostInSchema, PostOutSchema, FeedbackOutSchema, FeedbackInSchema, \
     PostSearchOutSchema, CategoryInSchema, CategoryOutSchema
 
@@ -13,6 +14,7 @@ router = NinjaAPI(
     title="Ninja API BLOG",
     description="Блог на Django Ninja API",
 )
+router.add_router("/auth", auth_router)
 
 @router.get("/ping")
 def ping(request) -> dict[str, bool]:
