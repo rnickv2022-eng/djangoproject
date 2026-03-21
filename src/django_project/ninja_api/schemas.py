@@ -72,3 +72,15 @@ class RegisterOutSchema(Schema):
 class ActivateOutSchema(Schema):
     message: str
     activated: bool
+
+class LoginInSchema(Schema):
+    username: str
+    password: str
+
+class LoginOutSchema(Schema):
+    message: str
+    success: bool
+    username: str | None = None
+    email: str | None = None
+    id: int | None = None
+    is_staff: bool
