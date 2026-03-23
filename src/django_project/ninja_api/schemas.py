@@ -84,3 +84,13 @@ class LoginOutSchema(Schema):
     email: str | None = None
     id: int | None = None
     is_staff: bool
+    access_token: str | None
+
+class ResendactivateInSchema(Schema):
+    email: EmailStr
+
+class ResendactivateOutSchema(Schema):
+    message: str
+    username: str
+    email: EmailStr
+    id: int
