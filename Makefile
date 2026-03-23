@@ -86,3 +86,16 @@ delete_container:
 
 in_container:
 	docker exec -it blog bash
+
+delete_image:
+	docker rmi blog_image
+
+db_blog_net:
+	docker run \
+	--name blog_db \
+	--network blog_net \
+	-e POSTGRES_USER=myuser \
+	-e POSTGRES_PASSWORD=mypassword \
+	-e POSTGRES_DB=mydb \
+	-v blog_db_data:/var/lib/postgresql/data \
+	-d postgres:17
