@@ -167,3 +167,9 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=int(os.getenv("ACCESS_TOKEN_LIFETIME", 5))),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=int(os.getenv("REFRESH_TOKEN_LIFETIME", 60))),
 }
+
+JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY', 'change-me-in-production')
+
+JWT_ALGORITHM = 'HS256'
+
+JWT_ACCESS_TOKEN_EXPIRE_MINUTES = 60

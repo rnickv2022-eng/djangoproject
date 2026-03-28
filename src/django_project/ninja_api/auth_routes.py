@@ -8,9 +8,10 @@ from ninja.errors import HttpError
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.core.mail import EmailMessage
+from django_project.blog_app.management.commands import utils
 
 from django_project.ninja_api.schemas import RegisterOutSchema, RegisterInSchema, ActivateOutSchema, LoginOutSchema, \
-    LoginInSchema
+    LoginInSchema, ResendactivateOutSchema, ResendactivateInSchema
 
 auth_router = Router(tags=["Authentication"])
 
@@ -86,6 +87,8 @@ async def login(request, payload:LoginInSchema) -> LoginOutSchema:
         request=request,
         username=payload.username,
         password=payload.password
+
+
     )
     if user is None:
         return LoginOutSchema(success=False, message="Неверный логин или пароль")
@@ -96,5 +99,41 @@ async def login(request, payload:LoginInSchema) -> LoginOutSchema:
         username=user.username,
         email=user.email,
         id=user.id,
-        is_staff=user.is_staff
+        is_staff=user.is_staff,
+        access_token=utils.create_access_token(user.pk, user.username),
+    )
+
+@auth_router.post("/resend-activation", response=ResendactivateOutSchema)
+async def resend_activation(request, payload:ResendactivateInSchema) -> ResendactivateOutSchema:
+    if not User.objects.filter(email=payload.email).exists():
+        raise HttpError(status_code=400, message="Пользователя с данным email не существует")
+    user = User.objects.get(email=payload.email)
+    if user.is_active:
+        raise HttpError(status_code=400, message="Пользователь актививрован")
+
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    token = default_token_generator.make_token(user)
+
+    activation_url = f"http://127.0.0.1:8000/api/v2/auth/activate/{uid}/{token}"
+    context = {
+        "activation_url": activation_url,
+        "user": user,
+        "site_name": "django blog",
+    }
+
+    html_content = render_to_string("email/activation_email.html", context)
+
+    message = EmailMessage(
+        subject="Подтверждение регистрации",
+        body=html_content,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[user.email],
+    )
+    message.content_subtype = "html"
+
+    message.send()
+
+    return ResendactivateOutSchema(message="Пользователь актививрован", username=user.username,
+        email=user.email,
+        id=user.id,
     )
