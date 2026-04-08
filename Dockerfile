@@ -15,4 +15,6 @@ RUN uv sync --frozen
 
 COPY . .
 
+ENV PYTHONPATH=/app/src/django_project
+
 CMD ["uv", "run", "src/django_project/manage.py", "runserver","0.0.0.0:8000"]
