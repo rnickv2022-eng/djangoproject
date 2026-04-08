@@ -53,7 +53,14 @@ restore:
 	uv run src/django_project/manage.py loaddata fixtures/datadump.json
 
 create_db:
-	docker run --name blog_db -e POSTGRES_USER=myuser -e POSTGRES_PASSWORD=mypassword -e POSTGRES_DB=mydb -p 5432:5432 -v blog_db_data:/var/lib/postgresql/data -d postgres:17
+	docker run \
+	--name blog_db \
+	-e POSTGRES_USER=myuser \
+	-e POSTGRES_PASSWORD=mypassword \
+	-e POSTGRES_DB=mydb \
+	-p 5432:5432 \
+	-v blog_db_data:/var/lib/postgresql/data \
+ 	-d postgres:17
 
 start_db:
 	docker start blog_db
@@ -99,3 +106,23 @@ db_blog_net:
 	-e POSTGRES_DB=mydb \
 	-v blog_db_data:/var/lib/postgresql/data \
 	-d postgres:17
+
+connecting_storage:
+	docker run --name blog \
+	--network blog_net \
+	-p 8000:8000 \
+	--env-file .env \
+	-v .src/django_project/media/:/app/src/django_project/media/ \
+	-d blog_image
+
+run_all: migrate restore
+	uv run src/django_project/manage.py runserver 0.0.0.0:8000
+
+compose_start:
+	docker compose up -d
+
+compose_rebuild:
+	docker compose up -d --build
+
+compose_logs:
+	docker compose logs -f
