@@ -85,11 +85,11 @@ jobs:
       - name: build and push docker image
         uses: docker/build-push-action@v7
         with:
-          context: .
           push: true
           tags: ${{steps.meta.outputs.tags}}
+          labels: ${{steps.meta.outputs.labels}}
           cache-from: type=registry,ref=ghcr.io/rnickv2022-eng/djangoproject:latest
-          cache-to: inline
+          cache-to: type=inline
 
 
   deploy:
