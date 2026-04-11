@@ -27,6 +27,11 @@ jobs:
   test:
     needs: lint
     runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
 
     steps:
       - name: Checkout code
@@ -47,5 +52,5 @@ jobs:
 
       - name: Run tests
         run: |
-          cd src/blog_project
+          cd src/django_project
           uv run python manage.py test --verbosity=2

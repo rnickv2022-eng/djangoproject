@@ -14,7 +14,7 @@ services:
       retries: 3
 
   django:
-    build: .
+    image: ghcr.io/rnickv2022-eng/djangoproject:latest
     container_name: blog
     command: make serve
     restart: unless-stopped
